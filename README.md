@@ -10,8 +10,6 @@
 
 ## Installation
 
-Install my-project with npm
-
 ```bash
   git clone https://github.com/Qoft/Spotify-Follow-Bot.git
   pip install -r requirements.txt
