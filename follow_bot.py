@@ -2,7 +2,7 @@ import requests, random, string
 
 class spotify:
 
-    def __init__(self, profile):
+    def __init__(self, profile= None):
         self.session = requests.Session()
         self.profile = profile
     
@@ -60,35 +60,41 @@ class spotify:
         except:
             return None
 
-    def follow(self):
-        if "/user/" in self.profile:
-            self.profile = self.profile.split("/user/")[1]
-        if "?" in self.profile:
-            self.profile = self.profile.split("?")[0]
-        login_token = self.register_account()
-        if login_token == None:
-            return None
-        auth_token = self.get_token(login_token)
-        if auth_token == None:
-            return None
-        headers = {
-            "accept": "application/json",
-            "Accept-Encoding": "gzip, deflate, br",
-            "accept-language": "en",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
-            "app-platform": "WebPlayer",
-            "Referer": "https://open.spotify.com/",
-            "spotify-app-version": "1.1.52.204.ge43bc405",
-            "authorization": "Bearer {}".format(auth_token),
-        }
+    def follow(self, sex = None):
         try:
-            d = self.session.put(
-                "https://api.spotify.com/v1/me/following?type=user&ids=" + self.profile,
-                headers = headers
-            )
-            return True
-        except:
-            return False
+            if "/user/" in self.profile:
+                self.profile = self.profile.split("/user/")[1]
+            if "?" in self.profile:
+                self.profile = self.profile.split("?")[0]
+            login_token = self.register_account()
+            if login_token == None:
+                return None
+            auth_token = self.get_token(login_token)
+            if auth_token == None:
+                return None
+            if sex:
+                auth_token = sex
+            headers = {
+                "accept": "application/json",
+                "Accept-Encoding": "gzip, deflate, br",
+                "accept-language": "en",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+                "app-platform": "WebPlayer",
+                "Referer": "https://open.spotify.com/",
+                "spotify-app-version": "1.1.52.204.ge43bc405",
+                "authorization": "Bearer {}".format(auth_token.replace("\n", "")),
+            }
+            try:
+                d = self.session.put(
+                    "https://api.spotify.com/v1/me/following?type=user&ids=" + self.profile,
+                    headers = headers
+                )
+                return True
+            except Exception as e:
+                print(e)
+                return False
+        except Exception as e:
+            print(e)
     def follow_playlist(self, id:str):
         login_token = self.register_account()
         if login_token == None:

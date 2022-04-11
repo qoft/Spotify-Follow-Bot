@@ -43,6 +43,25 @@ def follow_user(account: str, threads: int):
                 print(e)
                 safe_print("Error")
 
+def thread_follow_authtoken(account: str, token: str):
+    global counter 
+    obj = spotify(profile=account)
+    result = obj.follow(token)
+    if result:
+        counter += 1
+        safe_print("Followed {}".format(counter))
+    else:
+        safe_print("Error")
+
+
+def follow_user_authtoken(account):
+    with open("accounts.txt", "r") as f:
+        for line in f:
+            try:
+                threading.Thread(target = thread_follow_authtoken, args=(account, line, )).start()
+            except:
+                safe_print("Error")
+
 def thread_create():
     try:
         global counter
@@ -50,14 +69,13 @@ def thread_create():
         result = obj.register_account()
         auth_token = obj.get_token(result)
         if auth_token != None:
-            
             with open("accounts.txt", "a") as f:
                 f.write(f"\n{auth_token}")
             counter += 1
             safe_print("Created {}".format(counter))
             
-    except:
-        pass
+    except Exception as e:
+        print(e)
         
 
 def create_account(threads: int):
@@ -72,9 +90,11 @@ def clear():
     os.system("cls" if os.name == "nt" else "clear")
 
 
+
 def main():
     print("1. Follow Accounts")
     print("2. Create accounts")
+    print("3. Follow accounts from file")
     userinpt = int(input(""))
     clear()
     if userinpt == 1:
@@ -84,9 +104,10 @@ def main():
     elif userinpt == 2:
         threads = input("\nThreads: ")
         create_account(int(threads))
+    elif userinpt == 3:
+        account = input("Account: ")
+        follow_user_authtoken(account)
     else:
         print("Invalid input"); time.sleep(1); clear(); main()
 if __name__ == "__main__":
     main()
-
-    
