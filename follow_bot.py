@@ -2,8 +2,9 @@ import requests, random, string
 
 class spotify:
 
-    def __init__(self, profile= None):
+    def __init__(self, profile=None, playlist=None):
         self.session = requests.Session()
+        self.playlist = playlist
         self.profile = profile
     
     def register_account(self):
@@ -95,71 +96,32 @@ class spotify:
                 return False
         except Exception as e:
             print(e)
-    def follow_playlist(self, id:str):
-        login_token = self.register_account()
+    def follow_playlist(self):
+        if "/playlist/" in self.playlist:
+            self.playlist = self.playlist.split("/playlist/")[1]
+        if "?" in self.playlist:
+            self.playlist = self.playlist.split("?")[0]
+        login_token = self.register_account(selectedname)
         if login_token == None:
             return None
         auth_token = self.get_token(login_token)
         if auth_token == None:
             return None
         headers = {
-            "accept": "*/*",
+            "accept": "application/json",
             "Accept-Encoding": "gzip, deflate, br",
-            "accept-language": "en-US,en;q=0.5",
+            "accept-language": "en",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
             "app-platform": "WebPlayer",
             "Referer": "https://open.spotify.com/",
             "spotify-app-version": "1.1.52.204.ge43bc405",
-            "Content-Type": "application/json",
-            "Connection": "keep-alive",
-            "Content-Length": "758",
             "authorization": "Bearer {}".format(auth_token),
         }
         try:
-            d = self.session.post(
-                "https://spclient.wg.spotify.com/gabo-receiver-service/v3/events",
-                headers = headers, 
-                data = {
-                    "suppress_persist":False,
-                    "events":[
-                        {
-                            "sequence_id":"WLSxv+OyaJ3m6CNeqPP3CQ==",
-                            "sequence_number":11,
-                            "event_name":"KmInteraction",
-                            "fragments":{
-                                "context_sdk":{
-                                "version_name":"2.2.0",
-                                "type":"javascript"
-                                },
-                                "context_time":{
-                                "timestamp":1649607621032
-                                },
-                                "context_client_id":{
-                                "value":"2KXtlY0nTC6O5xfmpLCXHQ=="
-                                },
-                                "context_application":{
-                                "version":"web-player_2022-04-09_1649503793238_e326937"
-                                },
-                                "context_user_agent":{
-                                "value":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0"
-                                },
-                                "context_correlation_id":{
-                                "value":"55037208-7927-45b0-afae-8605da6e1229"
-                                },
-                                "message":{
-                                "page":"playlist",
-                                "view_uri":f"/playlist/{id}",
-                                "action_intent":"save",
-                                "action_type":"click",
-                                "target_uri":f"spotify:playlist:{id}",
-                                "item_id":""
-                                }
-                            }
-                        }
-                    ]
-                    }
+            self.session.put(
+                "https://api.spotify.com/v1/playlists/%s/followers" % (self.playlist,),
+                headers = headers
             )
-            print(d.status_code)
             return True
         except:
             return False
