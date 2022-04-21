@@ -101,7 +101,7 @@ class spotify:
             self.playlist = self.playlist.split("/playlist/")[1]
         if "?" in self.playlist:
             self.playlist = self.playlist.split("?")[0]
-        login_token = self.register_account(selectedname)
+        login_token = self.register_account()
         if login_token == None:
             return None
         auth_token = self.get_token(login_token)

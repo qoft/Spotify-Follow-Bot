@@ -86,6 +86,31 @@ def create_account(threads: int):
             except:
                 safe_print("Error")
 
+
+def thread_follow_playlist(playlistd):
+    try:
+        global counter
+        obj = spotify(playlist=playlistd)
+        result = obj.register_account()
+        auth_token = obj.get_token(result)
+        result = obj.follow_playlist()
+        if result:
+            counter += 1
+            safe_print("Followed {}".format(counter))
+        else:
+            safe_print("Error")
+    except Exception as e:
+        print(e)
+        
+
+def follow_playlist(playlist, threads: int):
+    while True:
+        if threading.active_count() <= threads:
+            try:
+                threading.Thread(target = thread_follow_playlist, args=(playlist, )).start()
+            except:
+                safe_print("Error")
+
 def clear():
     os.system("cls" if os.name == "nt" else "clear")
 
@@ -93,8 +118,9 @@ def clear():
 
 def main():
     print("1. Follow Accounts")
-    print("2. Create accounts")
-    print("3. Follow accounts from file")
+    print("2. Follow Playlist")
+    print("3. Create accounts")
+    print("4. Follow accounts from file")
     userinpt = int(input(""))
     clear()
     if userinpt == 1:
@@ -102,9 +128,13 @@ def main():
         account = input("Account: ")
         follow_user(account, int(threads))
     elif userinpt == 2:
+        playlist = input("Playlist: ")
+        threads = input("\nThreads: ")
+        follow_playlist(playlist, int(threads))
+    elif userinpt == 3:
         threads = input("\nThreads: ")
         create_account(int(threads))
-    elif userinpt == 3:
+    elif userinpt == 4:
         account = input("Account: ")
         follow_user_authtoken(account)
     else:
