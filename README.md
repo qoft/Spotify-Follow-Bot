@@ -3,7 +3,7 @@
 
 ## TODO
 
-- [ ] Follow Playlist
+- [x] Follow Playlist
 - [ ] Proxies
 
 <br>
