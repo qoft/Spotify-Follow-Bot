@@ -15,7 +15,7 @@
   pip install -r requirements.txt
   py main.py
 ```
-# Based on useragent's [spotify bot](https://github.com/useragents/Proxyless-Spotify-Follow-Bot).
+# Based on useragents' [spotify bot](https://github.com/useragents/Proxyless-Spotify-Follow-Bot).
 <br>
 
 ### Please note
