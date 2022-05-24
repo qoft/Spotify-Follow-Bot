@@ -1,7 +1,7 @@
 <br>
 <div align="center">
-<br>
-# Based on useragents' [spotify bot](https://github.com/useragents/Proxyless-Spotify-Follow-Bot).
+
+## Based on useragents' [spotify bot](https://github.com/useragents/Proxyless-Spotify-Follow-Bot).
 ## TODO
 
 - [x] Follow Playlist
