@@ -1,7 +1,7 @@
 <br>
 <div align="center">
 
-## Credits
+##
 # Based on useragents' [spotify bot](https://github.com/useragents/Proxyless-Spotify-Follow-Bot).
   
 <br>
