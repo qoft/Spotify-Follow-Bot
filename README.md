@@ -1,6 +1,9 @@
-<br/>
+<br>
 <div align="center">
 
+# Based on useragents' [spotify bot](https://github.com/useragents/Proxyless-Spotify-Follow-Bot).
+  
+<br>
 ## TODO
 
 - [x] Follow Playlist
@@ -15,7 +18,7 @@
   pip install -r requirements.txt
   py main.py
 ```
-    
+
 <br>
 
 ### Please note
